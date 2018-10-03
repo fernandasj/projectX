@@ -35,6 +35,14 @@ class Question(models.Model):
         default=OBJECTIVE
     )
 
+
+    discipline = models.ForeignKey(
+        'Discipline',
+        Discipline,
+        verbose_name='discipline',
+        related_name='questions'
+    )
+
     def __str__(self):
         return self.headQuestion
 
@@ -54,13 +62,24 @@ class Test(models.Model):
         editable=False
     )
 
-    aplicationDate = models.DateField(
+    aplicationDate = models.DateTimeField(
         'Aplication Date'
+    )
+
+    aplicationDateLimit = models.DateTimeField(
+        'Aplication Date Limit'
     )
 
     name = models.TextField(
         'Text name',
         max_length=254
+    )
+
+    discipline = models.ForeignKey(
+        'Discipline',
+        Discipline,
+        verbose_name='discipline',
+        related_name='tests'
     )
 
     questions = models.ManyToManyField(
@@ -130,6 +149,10 @@ class Choice(models.Model):
         Question,
         verbose_name='question',
         related_name='choices'
+    )
+
+    correct = models.BooleanField(
+        default=False,
     )
 
     textChoice = models.TextField(
@@ -223,20 +246,6 @@ class Discipline(models.Model):
         related_name='disciplines'
     )
 
-    test = models.ForeignKey(
-        'Test',
-        Test,
-        verbose_name='test',
-        related_name='disciplines'
-    )
-
-    question = models.ForeignKey(
-        'Question',
-        Question,
-        verbose_name='question',
-        related_name='disciplines'
-    )
-
     students = models.ManyToManyField(
         Student
     )
@@ -287,3 +296,10 @@ class TestStudent(models.Model):
     timeFinish = models.DateTimeField(
         'Time Finish'
     )
+
+    def __str__(self):
+        return self.test
+
+    class Meta:
+        verbose_name = 'TestStudent'
+        verbose_name_plural = 'TestStudents'
