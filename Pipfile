@@ -5,8 +5,9 @@ url = "https://pypi.org/simple"
 
 [packages]
 django = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.5"
+python_version = "3.6"
