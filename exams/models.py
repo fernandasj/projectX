@@ -2,6 +2,42 @@ import uuid
 from django.db import models
 from core.models import Student, Teacher
 
+# ======================
+# Discipline
+# ======================
+
+class Discipline(models.Model):
+    idDiscipline = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
+    name = models.TextField(
+        'Full name',
+        max_length=100
+    )
+
+    teacher = models.ForeignKey(
+        Teacher,
+        on_delete=models.CASCADE,
+        verbose_name='teacher',
+        related_name='disciplines'
+    )
+
+    students = models.ManyToManyField(
+        Student
+    )
+
+    def get_students(self):
+        return ",".join([str(s) for s in self.students.all()])
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Discipline'
+        verbose_name_plural = 'Disciplines'
 
 # ======================
 # Question
@@ -37,8 +73,8 @@ class Question(models.Model):
 
 
     discipline = models.ForeignKey(
-        'Discipline',
         Discipline,
+        'Discipline',
         verbose_name='discipline',
         related_name='questions'
     )
@@ -223,43 +259,6 @@ class Answer(models.Model):
         verbose_name = 'Answer'
         verbose_name_plural = 'Answers'
 
-# ======================
-# Discipline
-# ======================
-
-class Discipline(models.Model):
-    idDiscipline = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
-
-    name = models.TextField(
-        'Full name',
-        max_length=100
-    )
-
-    teacher = models.ForeignKey(
-        Teacher,
-        on_delete=models.CASCADE,
-        verbose_name='teacher',
-        related_name='disciplines'
-    )
-
-    students = models.ManyToManyField(
-        Student
-    )
-
-    def get_students(self):
-        return ",".join([str(s) for s in self.students.all()])
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Discipline'
-        verbose_name_plural = 'Disciplines'
-
 # ===============================
 # TestStudent
 # ===============================
@@ -298,7 +297,7 @@ class TestStudent(models.Model):
     )
 
     def __str__(self):
-        return self.test
+        return self.test.name
 
     class Meta:
         verbose_name = 'TestStudent'

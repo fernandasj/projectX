@@ -51,7 +51,7 @@ admin.site.register(Answer, AnswerAdmin)
 # Discipline
 # ======================
 class DisciplineAdmin(admin.ModelAdmin):
-    list_display = ('idDiscipline', 'name', 'teacher', 'test', 'question', 'get_students')
+    list_display = ('idDiscipline', 'name', 'teacher', 'get_students')
 
 admin.site.register(Discipline, DisciplineAdmin)
 
