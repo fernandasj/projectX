@@ -18,7 +18,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('core/', include('core.urls')),
-    path('exams/', include('exams.urls'))
+    # path('core/', include('core.urls')),
+    path('api/', include('exams.api_urls'), name='exams-api')
 ]
 
