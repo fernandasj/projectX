@@ -1,17 +1,38 @@
 from rest_framework import serializers
 from . import models
+from core import serializers as core
 
 
 class DisciplineSerializer(serializers.HyperlinkedModelSerializer):
+    
+    teacher = core.TeacherSerializer(
+        many=False,
+        read_only=True,
+        )
+    
+    students = core.StudentSerializer(
+        many=True,
+        read_only=True,
+        )
+    
     class Meta:
         model = models.Discipline
-        fields = '__all__'
+        fields = ('name', 'teacher', 'students')
 
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
+
+
+    discipline = DisciplineSerializer(
+        many=False,
+        read_only=True,
+        # source='name',
+        # view_name="Discipline-detail"
+        )
+
     class Meta:
         model = models.Question
-        fields = '__all__'
+        fields = ('idQuestion', 'headQuestion', 'typeQuestion', 'discipline')
 
 
 class TestSerializer(serializers.HyperlinkedModelSerializer):
