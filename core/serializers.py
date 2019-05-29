@@ -3,19 +3,14 @@ from django.contrib.auth.models import User
 from . import models
 
 
-class TeacherSerializer(serializers.HyperlinkedModelSerializer):
-	
-	# user=User(
- #        many=False,
- #        read_only=True
- #    )
-    
+class TeacherSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = models.Teacher
-        fields = ('idTeacher','name', 'email', 'dateOfBirth', 'gender')
+        fields = ('idTeacher','name', 'email', 'dateOfBirth', 'gender', 'user')
         
 
-class StudentSerializer(serializers.HyperlinkedModelSerializer):
+class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Student
         fields = '__all__'
