@@ -3,6 +3,9 @@ from . import models
 from core import serializers as core
 
 
+# ======================
+# Discipline
+# ======================
 class DisciplineSerializer(serializers.HyperlinkedModelSerializer):
     
     teacher = core.TeacherSerializer(
@@ -20,14 +23,15 @@ class DisciplineSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name', 'teacher', 'students')
 
 
+# ======================
+# Question
+# ======================
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
 
 
     discipline = DisciplineSerializer(
         many=False,
         read_only=True,
-        # source='name',
-        # view_name="Discipline-detail"
         )
 
     class Meta:
@@ -35,31 +39,45 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('idQuestion', 'headQuestion', 'typeQuestion', 'discipline')
 
 
+# ======================
+# Test
+# ======================
 class TestSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Test
         fields = '__all__'
 
 
+# ======================
+# CodeAnsewer
+# ======================
 class CodeAnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.CodeAnswer
         fields = '__all__'
 
 
+# ======================
+# Choice
+# ======================
 class ChoiceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Choice
         fields = '__all__'
 
 
+# ======================
+# Answer
+# ======================
 class AnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Answer
         fields = '__all__'
 
 
-
+# ======================
+# TestStudent
+# ======================
 class TestStudentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.TestStudent
