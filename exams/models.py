@@ -29,8 +29,8 @@ class Discipline(models.Model):
         Student
     )
 
-    # def get_students(self):
-    #     return ",".join([str(s) for s in self.students.all()])
+    def get_students(self):
+        return ",".join([str(s) for s in self.students.all()])
 
     def __str__(self):
         return self.name
@@ -122,8 +122,8 @@ class Test(models.Model):
         Question
     )
 
-    # def get_questions(self):
-    #     return ",".join([str(q) for q in self.questions.all()])
+    def get_questions(self):
+        return ",".join([str(q) for q in self.questions.all()])
 
     def __str__(self):
         return self.name

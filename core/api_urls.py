@@ -5,6 +5,7 @@ from . import api_views as api
 app_name = 'core-api'
 
 router = routers.DefaultRouter()
-router.register(r'teacher', api.TeacherViewSet, base_name='api-teacher')
+router.register(r'teachers', api.TeacherViewSet, base_name='api-teacher')
+router.register(r'students', api.StudentViewSet, base_name='api-student')
 
 urlpatterns = router.urls

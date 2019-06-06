@@ -1,24 +1,22 @@
 from rest_framework import serializers
-from . import models
+from . import models as exams
 from core import serializers as core
+
 
 # ======================
 # Discipline
 # ======================
 class DisciplineSerializer(serializers.ModelSerializer):
     
-    teacher = core.TeacherSerializer()    
-    students = core.StudentSerializer(many=True)
-    
     class Meta:
-        model = models.Discipline
+        model = exams.Discipline
         fields = ('name', 'teacher', 'students')
 
 
 class CreateDisciplineSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = models.Discipline
+        model = exams.Discipline
         fields = ('name', 'teacher', 'students')
         list_serializer_class = DisciplineSerializer
 
@@ -26,59 +24,119 @@ class CreateDisciplineSerializer(serializers.ModelSerializer):
 # ======================
 # Question
 # ======================
-class QuestionSerializer(serializers.HyperlinkedModelSerializer):
-
-
-    discipline = DisciplineSerializer(
-        many=False,
-        read_only=True,
-        )
+class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.Question
+        model = exams.Question
         fields = ('idQuestion', 'headQuestion', 'typeQuestion', 'discipline')
+       
 
+class CreateQuestionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = exams.Question
+        fields = ('idQuestion', 'headQuestion', 'typeQuestion', 'discipline')
+        list_serializer_class = QuestionSerializer
 
 # ======================
 # Test
 # ======================
-class TestSerializer(serializers.HyperlinkedModelSerializer):
+class TestSerializer(serializers.ModelSerializer):
+
+    # discipline = DisciplineSerializer()
+    # questions = QuestionSerializer(many=True)
+
     class Meta:
-        model = models.Test
-        fields = '__all__'
+        model = exams.Test
+        fields = ('idTest', 'aplicationDate', 'aplicationDateLimit', 'name', 'discipline', 'questions')
+
+
+class CreateTestSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = exams.Test
+        fields = ('idTest', 'aplicationDate', 'aplicationDateLimit', 'name', 'discipline', 'questions')
+        list_serializer_class = TestSerializer
 
 
 # ======================
-# CodeAnsewer
+# CodeAnswer
 # ======================
-class CodeAnswerSerializer(serializers.HyperlinkedModelSerializer):
+class CodeAnswerSerializer(serializers.ModelSerializer):
+
+    # question = QuestionSerializer()
+
     class Meta:
-        model = models.CodeAnswer
-        fields = '__all__'
+        model = exams.CodeAnswer
+        fields = ('idCodeAnswer', 'question', 'inputCode', 'outputCode')
+
+
+class CreateCodeAnswerSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = exams.CodeAnswer
+        fields = ('idCodeAnswer', 'question', 'inputCode', 'outputCode')
+        list_serializer_class = CodeAnswerSerializer
 
 
 # ======================
 # Choice
 # ======================
-class ChoiceSerializer(serializers.HyperlinkedModelSerializer):
+class ChoiceSerializer(serializers.ModelSerializer):
+
+    # question = QuestionSerializer()
+
     class Meta:
-        model = models.Choice
-        fields = '__all__'
+        model = exams.Choice
+        fields = ('idChoice', 'question', 'correct', 'textChoice')
+
+
+class CreateChoiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = exams.Choice
+        fields = ('idChoice', 'question', 'correct', 'textChoice')
+        list_serializer_class = ChoiceSerializer
 
 
 # ======================
 # Answer
 # ======================
-class AnswerSerializer(serializers.HyperlinkedModelSerializer):
+class AnswerSerializer(serializers.ModelSerializer):
+
+    # student = core.StudentSerializer()
+    # test = TestSerializer()
+    # question = QuestionSerializer()
+
     class Meta:
-        model = models.Answer
-        fields = '__all__'
+        model = exams.Answer
+        fields = ('idAnswer', 'textAnswer', 'correct', 'choice', 'student', 'test', 'question')
+
+
+class CreateAnswerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = exams.Answer
+        fields = ('idAnswer', 'textAnswer', 'correct', 'choice', 'student', 'test', 'question')
+        list_serializer_class = AnswerSerializer
 
 
 # ======================
 # TestStudent
 # ======================
-class TestStudentSerializer(serializers.HyperlinkedModelSerializer):
+class TestStudentSerializer(serializers.ModelSerializer):
+
+    # test = TestSerializer()
+    # student = core.StudentSerializer()
+    
     class Meta:
-        model = models.TestStudent
-        fields = '__all__'
+        model = exams.TestStudent
+        fields = ('idTestStudent', 'test', 'student', 'scores', 'timeStart', 'timeFinish')
+
+
+class CreateTestStudentSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = exams.TestStudent
+        fields = ('idTestStudent', 'test', 'student', 'scores', 'timeStart', 'timeFinish')
+        list_serializer_class = TestSerializer

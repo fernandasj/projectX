@@ -13,7 +13,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Student
-        fields = '__all__'
+        fields = ('idStudent','name', 'email', 'dateOfBirth', 'course', 'gender', 'user')
 
 
 
