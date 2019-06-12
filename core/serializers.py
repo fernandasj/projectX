@@ -1,5 +1,8 @@
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
+
 from django.contrib.auth.models import User
+
 from . import models
 
 
@@ -8,6 +11,11 @@ class TeacherSerializer(serializers.ModelSerializer):
     pk = serializers.UUIDField(read_only=True, source='idTeacher')
     password = serializers.CharField(write_only=True)
     username = serializers.CharField(write_only=True)
+    token = serializers.SerializerMethodField(read_only=True)
+
+    def get_token(self, obj):
+        token, created = Token.objects.get_or_create(user=obj.user)
+        return token.key
 
     def validate_username(self, value):
         if User.objects.filter(username=value).exists():
@@ -26,7 +34,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Teacher
-        fields = ('pk', 'name', 'email', 'dateOfBirth', 'gender', 'username', 'password')
+        fields = ('pk', 'name', 'email', 'dateOfBirth', 'gender', 'username', 'password', 'token')
         
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -34,6 +42,11 @@ class StudentSerializer(serializers.ModelSerializer):
     pk = serializers.UUIDField(read_only=True, source='idStudent')
     password = serializers.CharField(write_only=True)
     username = serializers.CharField(write_only=True)
+    token = serializers.SerializerMethodField(read_only=True)
+
+    def get_token(self, obj):
+        token, created = Token.objects.get_or_create(user=obj.user)
+        return token.key
 
     def validate_username(self, value):
         if User.objects.filter(username=value).exists():
@@ -52,12 +65,11 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Student
-        fields = ('pk', 'name', 'email', 'dateOfBirth', 'course', 'gender', 'username', 'password')
+        fields = ('pk', 'name', 'email', 'dateOfBirth', 'course', 'gender', 'username', 'password', 'token')
 
 
+# class UserSerializer(serializers.ModelSerializer):
 
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ('email', 'first_name', 'last_name', 'password', 'is_superuser')
+#     class Meta:
+#         model = User
+#         fields = ('email', 'first_name', 'last_name', 'password', 'is_superuser')

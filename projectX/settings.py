@@ -25,7 +25,7 @@ SECRET_KEY = 'o*q9#epv3qu#!sgqa-%n(9!6drm8ooasdmx&fxm^kosoe7u^_)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework.authtoken',
 
     'core',
     'exams',
@@ -81,9 +82,9 @@ LOGIN_REDIRECT_URL = '/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', 'database'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASS', '12345678'),
+        'NAME': os.environ.get('DB_NAME', 'projectx'),
+        'USER': os.environ.get('DB_USER', 'guga'),
+        'PASSWORD': os.environ.get('DB_PASS', 'gugasv'),
         'HOST': 'localhost',
         'PORT': '5432'
     }
@@ -133,3 +134,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
 #     "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
 # }
+
+# Rest framework
+# https://www.django-rest-framework.org/
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
