@@ -82,9 +82,9 @@ LOGIN_REDIRECT_URL = '/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', 'projectx'),
-        'USER': os.environ.get('DB_USER', 'guga'),
-        'PASSWORD': os.environ.get('DB_PASS', 'gugasv'),
+        'NAME': os.environ.get('DB_NAME', 'database'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASS', '12345678'),
         'HOST': 'localhost',
         'PORT': '5432'
     }

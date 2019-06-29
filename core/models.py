@@ -36,8 +36,8 @@ class Teacher(models.Model):
     )
 
     gender = models.CharField(
-        max_length=1
-        choices=GENDER,
+        max_length=1,
+        choices=GENDER
     )
 
     user = models.OneToOneField(
