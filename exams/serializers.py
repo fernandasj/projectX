@@ -64,7 +64,7 @@ class CreateTestSerializer(serializers.ModelSerializer):
 # ======================
 class CodeAnswerSerializer(serializers.ModelSerializer):
 
-    # question = QuestionSerializer()
+    question = QuestionSerializer(read_only=True)
 
     class Meta:
         model = exams.CodeAnswer
