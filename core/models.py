@@ -37,12 +37,17 @@ class Teacher(models.Model):
 
     gender = models.CharField(
         max_length=1
+        choices=GENDER,
     )
 
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         related_name='teachers'
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def __str__(self):
@@ -103,6 +108,10 @@ class Student(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='students'
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def __str__(self):

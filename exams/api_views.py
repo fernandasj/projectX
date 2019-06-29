@@ -8,7 +8,7 @@ from . import serializers
 # ======================
 class DisciplineViewSet(viewsets.ModelViewSet):
 
-    queryset = exams.Discipline.objects.all()
+    queryset = exams.Discipline.objects.filter(active=True)
     serializer_class = serializers.DisciplineSerializer
 
     class Meta:
@@ -20,7 +20,7 @@ class DisciplineViewSet(viewsets.ModelViewSet):
 # ======================
 class QuestionViewSet(viewsets.ModelViewSet):
 
-    queryset = exams.Question.objects.all()
+    queryset = exams.Question.objects.filter(active=True)
     serializer_class = serializers.CreateQuestionSerializer
 
     class Meta:
@@ -32,7 +32,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 # ======================
 class TestViewSet(viewsets.ModelViewSet):
 
-    queryset = exams.Test.objects.all()
+    queryset = exams.Test.objects.filter(active=True)
     serializer_class = serializers.CreateTestSerializer
 
     class Meta:
@@ -44,7 +44,7 @@ class TestViewSet(viewsets.ModelViewSet):
 # ======================
 class CodeAnswerViewSet(viewsets.ModelViewSet):
 
-    queryset = exams.CodeAnswer.objects.all()
+    queryset = exams.CodeAnswer.objects.filter(active=True)
     serializer_class = serializers.CreateCodeAnswerSerializer
 
     class Meta:
@@ -56,7 +56,7 @@ class CodeAnswerViewSet(viewsets.ModelViewSet):
 # ======================
 class ChoiceViewSet(viewsets.ModelViewSet):
 
-    queryset = exams.Choice.objects.all()
+    queryset = exams.Choice.objects.filter(active=True)
     serializer_class = serializers.CreateChoiceSerializer
 
     class Meta:
@@ -68,7 +68,7 @@ class ChoiceViewSet(viewsets.ModelViewSet):
 # ======================
 class AnswerViewSet(viewsets.ModelViewSet):
 
-    queryset = exams.Answer.objects.all()
+    queryset = exams.Answer.objects.filter(active=True)
     serializer_class = serializers.CreateAnswerSerializer
 
     class Meta:
@@ -80,7 +80,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
 # ======================
 class TestStudentViewSet(viewsets.ModelViewSet):
 
-    queryset = exams.TestStudent.objects.all()
+    queryset = exams.TestStudent.objects.filter(active=True)
     serializer_class = serializers.CreateTestStudentSerializer
 
     class Meta:

@@ -5,11 +5,11 @@ from . import serializers
 
 class TeacherViewSet(viewsets.ModelViewSet):
 
-    queryset = models.Teacher.objects.all()
+    queryset = models.Teacher.objects.filter(active=True)
     serializer_class = serializers.TeacherSerializer
 
 
 class StudentViewSet(viewsets.ModelViewSet):
 
-    queryset = models.Student.objects.all()
+    queryset = models.Student.objects.filter(active=True)
     serializer_class = serializers.StudentSerializer

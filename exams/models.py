@@ -29,6 +29,10 @@ class Discipline(models.Model):
         Student
     )
 
+    active = models.BooleanField(
+        default=True
+    )
+
     def get_students(self):
         return ",".join([str(s) for s in self.students.all()])
 
@@ -79,6 +83,10 @@ class Question(models.Model):
         related_name='questions'
     )
 
+    active = models.BooleanField(
+        default=True
+    )
+
     def __str__(self):
         return self.headQuestion
 
@@ -122,6 +130,10 @@ class Test(models.Model):
         Question
     )
 
+    active = models.BooleanField(
+        default=True
+    )
+
     def get_questions(self):
         return ",".join([str(q) for q in self.questions.all()])
 
@@ -162,6 +174,10 @@ class CodeAnswer(models.Model):
         max_length=1000
     )
 
+    active = models.BooleanField(
+        default=True
+    )
+
     def __str__(self):
         return self.inputCode
 
@@ -194,6 +210,10 @@ class Choice(models.Model):
     textChoice = models.TextField(
         'Text Choice',
         max_length=100
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def __str__(self):
@@ -252,6 +272,10 @@ class Answer(models.Model):
         related_name='answers'
     )
 
+    active = models.BooleanField(
+        default=True
+    )
+
     def __str__(self):
         return self.textAnswer
 
@@ -294,6 +318,10 @@ class TestStudent(models.Model):
 
     timeFinish = models.DateTimeField(
         'Time Finish'
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def __str__(self):
