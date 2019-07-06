@@ -26,7 +26,9 @@ class Discipline(models.Model):
     )
 
     students = models.ManyToManyField(
-        Student
+        Student,
+        verbose_name='student',
+        related_name='disciplines',
     )
 
     active = models.BooleanField(
@@ -127,7 +129,9 @@ class Test(models.Model):
     )
 
     questions = models.ManyToManyField(
-        Question
+        Question,
+        verbose_name='question',
+        related_name='tests'
     )
 
     active = models.BooleanField(

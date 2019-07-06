@@ -14,8 +14,8 @@ class TeacherSerializer(serializers.ModelSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 
     def get_token(self, obj):
-        token, created = Token.objects.get_or_create(user=obj.user)
-        return token.key
+         token, created = Token.objects.get_or_create(user=obj.user)
+         return token.key
 
     def validate_username(self, value):
         if User.objects.filter(username=value).exists():
@@ -45,8 +45,8 @@ class StudentSerializer(serializers.ModelSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 
     def get_token(self, obj):
-        token, created = Token.objects.get_or_create(user=obj.user)
-        return token.key
+         token, created = Token.objects.get_or_create(user=obj.user)
+         return token.key
 
     def validate_username(self, value):
         if User.objects.filter(username=value).exists():
