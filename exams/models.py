@@ -13,7 +13,7 @@ class Discipline(models.Model):
         editable=False
     )
 
-    name = models.TextField(
+    name = models.CharField(
         'Full name',
         max_length=100
     )
@@ -26,7 +26,13 @@ class Discipline(models.Model):
     )
 
     students = models.ManyToManyField(
-        Student
+        Student,
+        verbose_name='student',
+        related_name='disciplines',
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def get_students(self):
@@ -79,6 +85,10 @@ class Question(models.Model):
         related_name='questions'
     )
 
+    active = models.BooleanField(
+        default=True
+    )
+
     def __str__(self):
         return self.headQuestion
 
@@ -106,7 +116,7 @@ class Test(models.Model):
         'Aplication Date Limit'
     )
 
-    name = models.TextField(
+    name = models.CharField(
         'Text name',
         max_length=254
     )
@@ -119,7 +129,13 @@ class Test(models.Model):
     )
 
     questions = models.ManyToManyField(
-        Question
+        Question,
+        verbose_name='question',
+        related_name='tests'
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def get_questions(self):
@@ -162,6 +178,10 @@ class CodeAnswer(models.Model):
         max_length=1000
     )
 
+    active = models.BooleanField(
+        default=True
+    )
+
     def __str__(self):
         return self.inputCode
 
@@ -194,6 +214,10 @@ class Choice(models.Model):
     textChoice = models.TextField(
         'Text Choice',
         max_length=100
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def __str__(self):
@@ -252,6 +276,10 @@ class Answer(models.Model):
         related_name='answers'
     )
 
+    active = models.BooleanField(
+        default=True
+    )
+
     def __str__(self):
         return self.textAnswer
 
@@ -294,6 +322,10 @@ class TestStudent(models.Model):
 
     timeFinish = models.DateTimeField(
         'Time Finish'
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def __str__(self):

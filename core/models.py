@@ -8,13 +8,20 @@ from django.contrib.auth.models import User
 # =====================
 
 class Teacher(models.Model):
+    M = 'M'
+    F = 'F'
+    GENDER = (
+        (M, 'M'),
+        (F, 'F'),
+    )
+
     idTeacher = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False
     )
 
-    name = models.TextField(
+    name = models.CharField(
         'Full name',
         max_length=100
     )
@@ -29,13 +36,18 @@ class Teacher(models.Model):
     )
 
     gender = models.CharField(
-        max_length=1
+        max_length=1,
+        choices=GENDER
     )
 
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         related_name='teachers'
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def __str__(self):
@@ -51,13 +63,22 @@ class Teacher(models.Model):
 # ====================
 
 class Student(models.Model):
+    SELECT = 'SELECT'
+    M = 'M'
+    F = 'F'
+    GENDER = (
+        (SELECT, 'SELECT'),
+        (M, 'M'),
+        (F, 'F'),
+    )
+    
     idStudent = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False
     )
 
-    name = models.TextField(
+    name = models.CharField(
         'Full name',
         max_length=100
     )
@@ -72,7 +93,10 @@ class Student(models.Model):
     )
 
     gender = models.CharField(
-        max_length=1
+        'Gender',
+        max_length=1,
+        choices=GENDER,
+        default=SELECT
     )
 
     course = models.CharField(
@@ -84,6 +108,10 @@ class Student(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='students'
+    )
+
+    active = models.BooleanField(
+        default=True
     )
 
     def __str__(self):

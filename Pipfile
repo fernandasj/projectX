@@ -6,8 +6,10 @@ url = "https://pypi.org/simple"
 [packages]
 django = "*"
 djangorestframework = "*"
+psycopg2 = "*"
 
 [dev-packages]
+pylint = "*"
 
 [requires]
 python_version = "3.6"
