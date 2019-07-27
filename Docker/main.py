@@ -1,21 +1,17 @@
-import sys
+import docker
+from io import BytesIO
+from docker import APIClient
 
-def somar(n1, n2):
-	return n1 + n2
+def build_image():
+
+    client = docker.from_env()
+    print(client.images.build(path="/home/fernanda/Documentos/projectX/Docker/", rm=True, tag='projectx/image'))
+    # print(client.containers.run('projectx/image', environment=["ARQUIVO=main_text.py, ENTRADA=entrada.txt, SAIDA=saida.txt"]))
+    print(client.containers.run('projectx/image', environment=["ARQUIVO=main_test.py", "ENTRADA=entrada.txt", "SAIDA=saida.txt"]))
 
 def main():
-	
-	arg1  = int(sys.argv[1])
-	arg2 = int(sys.argv[2])
-	result = int(sys.argv[3])
-	operation = somar(arg1, arg2)
-	
-	if(operation == result):
-		output = True
-	else:
-		output = False
 
-	print(output)
+	build_image()	
 
 if __name__ == "__main__":
 	main()

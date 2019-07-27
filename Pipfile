@@ -7,6 +7,7 @@ url = "https://pypi.org/simple"
 django = "*"
 djangorestframework = "*"
 psycopg2 = "*"
+docker = {extras = ["tls"],version = "*"}
 
 [dev-packages]
 pylint = "*"

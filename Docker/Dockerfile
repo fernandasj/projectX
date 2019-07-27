@@ -1,3 +1,10 @@
 FROM python:3-alpine
-COPY main.py main.py
-ENTRYPOINT python main.py 1 2 3
+ENV ARQUIVO main_test.py
+ENV ENTRADA entrada.txt
+ENV SAIDA saida.txt
+
+COPY ${ARQUIVO} main.py
+COPY ${ENTRADA} entrada.txt
+COPY ${SAIDA} saida.txt
+
+CMD ["python", "main.py", "entrada.txt", "saida.txt"]
