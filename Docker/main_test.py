@@ -19,8 +19,7 @@ def main():
 			imput = l.split()
 			soma = somar(int(imput[0]), int(imput[1]))
 			s = int(listSaida[i-1])
-			# print(s)
-			# print(soma)
+			
 			if soma == s:
 				print(True)
 			else:
