@@ -276,6 +276,12 @@ class Answer(models.Model):
         related_name='answers'
     )
 
+    comment = models.TextField(
+        'comentário sobre a solução',
+        default="",
+        max_length=500
+    )
+
     active = models.BooleanField(
         default=True
     )
