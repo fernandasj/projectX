@@ -23,8 +23,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = exams.Question.objects.filter(active=True)
     serializer_class = serializers.CreateQuestionSerializer
 
-    class Meta:
-        list_serializer_class = serializers.QuestionSerializer
+    def get_serializer_class(self):
+        if self.request.method.lower() == 'get':
+            return serializers.QuestionSerializer
+        return super().get_serializer_class()
 
 
 # ======================
@@ -35,8 +37,10 @@ class TestViewSet(viewsets.ModelViewSet):
     queryset = exams.Test.objects.filter(active=True)
     serializer_class = serializers.CreateTestSerializer
 
-    class Meta:
-        list_serializer_class = serializers.TestSerializer
+    def get_serializer_class(self):
+        if self.request.method.lower() == 'get':
+            return serializers.TestSerializer
+        return super().get_serializer_class()
 
 
 # ======================

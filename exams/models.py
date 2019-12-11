@@ -50,15 +50,14 @@ class Discipline(models.Model):
 # ======================
 
 class Question(models.Model):
-    CODE = 'CODE'
-    OBJECTIVE = 'OBJECTIVE'
-    SUBJECTIVE = 'SUBJECTIVE'
+    OBJECTIVE = 0
+    SUBJECTIVE = 1
+    CODE = 2
     TYPE_QUESTION = (
-        (CODE, 'Code'),
-        (SUBJECTIVE, 'Subjective'),
-        (OBJECTIVE, 'Objective'),
+        (CODE, 'Algoritmo'),
+        (SUBJECTIVE, 'Subjetiva'),
+        (OBJECTIVE, 'Objetiva'),
     )
-
     idQuestion = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -70,9 +69,8 @@ class Question(models.Model):
         max_length=500
     )
 
-    typeQuestion = models.CharField(
+    typeQuestion = models.IntegerField(
         'Type Question',
-        max_length=45,
         choices=TYPE_QUESTION,
         default=OBJECTIVE
     )
