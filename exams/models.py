@@ -78,9 +78,10 @@ class Question(models.Model):
 
     discipline = models.ForeignKey(
         Discipline,
-        'Discipline',
-        verbose_name='discipline',
-        related_name='questions'
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='questions',
+        verbose_name='disciplines'
     )
 
     active = models.BooleanField(
@@ -160,8 +161,8 @@ class CodeAnswer(models.Model):
     )
 
     question = models.ForeignKey(
-        'Question',
         Question,
+        on_delete=models.CASCADE,
         verbose_name='question',
         related_name='CodeAnswers'
     )

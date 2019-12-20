@@ -18,7 +18,7 @@ class CreateDisciplineSerializer(serializers.ModelSerializer):
     class Meta:
         model = exams.Discipline
         fields = ('idDiscipline','name', 'teacher', 'students')
-        list_serializer_class = DisciplineSerializer
+        # list_serializer_class = DisciplineSerializer
 
 
 # ======================
