@@ -121,8 +121,8 @@ class Test(models.Model):
     )
 
     discipline = models.ForeignKey(
-        'Discipline',
         Discipline,
+        on_delete=models.CASCADE,
         verbose_name='discipline',
         related_name='tests'
     )
@@ -304,8 +304,8 @@ class TestStudent(models.Model):
     )
 
     test = models.ForeignKey(
-        'Test',
         Test,
+        on_delete=models.CASCADE,
         verbose_name='test',
         related_name='testStudents'
     )
@@ -326,7 +326,7 @@ class TestStudent(models.Model):
     )
 
     timeFinish = models.DateTimeField(
-        'Time Finish'
+
     )
 
     active = models.BooleanField(

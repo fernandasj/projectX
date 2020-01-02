@@ -129,6 +129,7 @@ class TestStudentViewSet(viewsets.ModelViewSet):
     queryset = exams.TestStudent.objects.filter(active=True)
     serializer_class = serializers.CreateTestStudentSerializer
 
-    class Meta:
-        list_serializer_class = serializers.TestStudentSerializer
-        
+    def get_serializer_class(self):
+        if self.request.method.lower() == 'get':
+            return serializers.TestStudentSerializer
+        return super().get_serializer_class()
