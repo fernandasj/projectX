@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import logging
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,6 +32,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'huey.contrib.djhuey',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +49,17 @@ INSTALLED_APPS = [
 
     'corsheaders',
 ]
+
+HUEY = {
+    'name': 'test-django',
+    'consumer': {
+        'blocking': True,  # Use blocking list pop instead of polling Redis.
+        'loglevel': logging.DEBUG,
+        'workers': 4,
+        'scheduler_interval': 1,
+        'simple_log': True,
+    },
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

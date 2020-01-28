@@ -1,7 +1,9 @@
 import docker
+from huey.contrib.djhuey import task
 from io import BytesIO
 from docker import APIClient
 
+@task()
 def build_image():
 
     client = docker.from_env()

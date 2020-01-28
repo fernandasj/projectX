@@ -3,6 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
+# from . import tasks
+from Docker import main
 from . import models as exams
 from . import serializers
 
@@ -16,6 +18,11 @@ class DisciplineViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.method.lower() == 'get':
+            # r = tasks.add(1, 3)
+            r = main.build_image()
+            r(blocking=False)
+            print("aqui")
+            # print("TASK - " + str(r(blocking=True)))
             return serializers.DisciplineSerializer
         return super().get_serializer_class()
 
