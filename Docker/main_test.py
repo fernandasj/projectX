@@ -17,7 +17,7 @@ def main():
 		for l in listEntrada:
 			i += 1
 			imput = l.split()
-			soma = somar(int(imput[0]), int(imput[1]))
+			soma = somar(*imput)
 			s = int(listSaida[i-1])
 			
 			if soma == s:

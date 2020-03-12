@@ -1,2 +1,2 @@
-docker build -t projectx/dockerpy .
-docker run -it --name dockerpy projectx/dockerpy -e ARQUIVO=main_text.py -e ENTRADA=entrada.txt -e SAIDA=saida.txt
+docker build --build-arg ARQUIVO=answer.py --build-arg ENTRADA="1 2" -t projectx/dockerpy .
+docker run -it --name dockerpy projectx/dockerpy 

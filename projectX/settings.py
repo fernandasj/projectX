@@ -51,14 +51,20 @@ INSTALLED_APPS = [
 ]
 
 HUEY = {
-    'name': 'test-django',
-    'consumer': {
-        'blocking': True,  # Use blocking list pop instead of polling Redis.
-        'loglevel': logging.DEBUG,
-        'workers': 4,
-        'scheduler_interval': 1,
-        'simple_log': True,
-    },
+    'huey_class': 'huey.SqliteHuey',
+    'name': 'projectx',
+    'results': True,
+    'store_none': False,
+    'immediate': False,
+    'utc': True
+    # 'name': 'test-django',
+    # 'consumer': {
+    #     'blocking': True,  # Use blocking list pop instead of polling Redis.
+    #     'loglevel': logging.DEBUG,
+    #     'workers': 4,
+    #     'scheduler_interval': 1,
+    #     'simple_log': True,
+    # },
 }
 
 MIDDLEWARE = [
@@ -163,7 +169,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://www.django-rest-framework.org/
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 40,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),

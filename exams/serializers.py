@@ -48,6 +48,9 @@ class TestSerializer(serializers.ModelSerializer):
 
     # discipline = DisciplineSerializer()
     # questions = QuestionSerializer(many=True)
+    discipline = serializers.StringRelatedField(many=False)
+    aplicationDate = serializers.DateTimeField(format='%d/%m/%Y')
+    aplicationDateLimit = serializers.DateTimeField(format='%d/%m/%Y')
 
     class Meta:
         model = exams.Test
@@ -116,6 +119,8 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class CreateAnswerSerializer(serializers.ModelSerializer):
+
+    # choice = ChoiceSerializer(default="")
 
     class Meta:
         model = exams.Answer

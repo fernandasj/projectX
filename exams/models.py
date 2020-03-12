@@ -248,8 +248,10 @@ class Answer(models.Model):
     )
 
     choice = models.ForeignKey(
-        'Choice',
         Choice,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         verbose_name='choice',
         related_name='answers'
     )
@@ -262,15 +264,15 @@ class Answer(models.Model):
     )
 
     test = models.ForeignKey(
-        'Test',
         Test,
+        on_delete=models.CASCADE,
         verbose_name='test',
         related_name='answers'
     )
 
     question = models.ForeignKey(
-        'Question',
         Question,
+        on_delete=models.CASCADE,
         verbose_name='question',
         related_name='answers'
     )
@@ -326,7 +328,9 @@ class TestStudent(models.Model):
     )
 
     timeFinish = models.DateTimeField(
-
+        'Time Finish',
+        null=True,
+        blank=True
     )
 
     active = models.BooleanField(

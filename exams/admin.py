@@ -41,8 +41,7 @@ admin.site.register(Choice, ChoiceAdmin)
 # AnswerAdmin
 # ======================
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('idAnswer', 'textAnswer', 'correct', 'choice', 'student',
-        'test', 'question')
+    list_display = ('idAnswer', 'correct','test', 'question')
 
 admin.site.register(Answer, AnswerAdmin)
 
