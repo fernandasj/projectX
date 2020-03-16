@@ -99,12 +99,9 @@ class AnswerViewSet(viewsets.ModelViewSet):
     def create(self, request):
         answer = exams.Answer.objects.create(textAnswer=request.data['textAnswer'], student_id=request.data['student'], test_id=request.data['test'], question_id=request.data['question'])
         if answer.question.typeQuestion == 0:
-            answer.choice = request.data['choice']
-            print(request.data['choices'])
-            # for choice in request.data['choices']:
-            #     newChoice = exams.Choice.objects.create(question=question, correct=choice['correct'], 
-            #         textChoice=choice['textChoice'])
-            #     newChoice.save()
+            answer.choice_pk = request.data['choice']
+            tasks.correctionChoice(answer.choice_pk, answer.pk)
+
         elif answer.question.typeQuestion == 2:
             tasks.correctionCode(answer.pk)
         answer.save()
@@ -113,10 +110,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.request.method.lower() == 'get':
             tasks.image()
-            # r = main.build_image()
-            # r(blocking=False)
-            # print("aqui")
-            # print("TASK - " + str(r(blocking=True)))
             return serializers.AnswerSerializer
         return super().get_serializer_class()
 

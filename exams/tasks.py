@@ -31,7 +31,9 @@ input = MagicMock(side_effect=lst)
 		build_image(str(answer.pk) + '.py' , testcase.inputCode, testcase.outputCode, answer.pk)
 
 @task()
-def correctionChoice(pk):
+def correctionChoice(choice, answer):
 
-	answer = exams.Answer.objects.get(pk=pk)
+	choice = exams.Choice.objects.get(pk=choice)
 
+	if(choice.correct):
+		exams.Answer.objects.filter(pk=answer).update(correct=True)
