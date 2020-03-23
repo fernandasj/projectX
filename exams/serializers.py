@@ -46,8 +46,7 @@ class CreateQuestionSerializer(serializers.ModelSerializer):
 # ======================
 class TestSerializer(serializers.ModelSerializer):
 
-    # discipline = DisciplineSerializer()
-    # questions = QuestionSerializer(many=True)
+    questions = QuestionSerializer(many=True)
     discipline = serializers.StringRelatedField(many=False)
     aplicationDate = serializers.DateTimeField(format='%d/%m/%Y')
     aplicationDateLimit = serializers.DateTimeField(format='%d/%m/%Y')

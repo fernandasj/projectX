@@ -29,6 +29,18 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = exams.Question.objects.filter(active=True)
     serializer_class = serializers.CreateQuestionSerializer
 
+    @action(detail=True, methods=['GET'], name='Attach meta items ids')
+    def choices(self, request, pk=None):
+        queryset = exams.Choice.objects.filter(question_id=pk)
+        serializer = serializers.ChoiceSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['GET'], name='Attach meta items ids')
+    def codes(self, request, pk=None):
+        queryset = exams.CodeAnswer.objects.filter(question_id=pk)
+        serializer = serializers.CodeAnswerSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     def create(self, request):
         question = exams.Question.objects.create(headQuestion=request.data['headQuestion'], typeQuestion=request.data['typeQuestion'], discipline_id=request.data['discipline'])
         if question.typeQuestion == '0':
@@ -72,9 +84,10 @@ class CodeAnswerViewSet(viewsets.ModelViewSet):
     queryset = exams.CodeAnswer.objects.filter(active=True)
     serializer_class = serializers.CreateCodeAnswerSerializer
 
-    class Meta:
-        list_serializer_class = serializers.CodeAnswerSerializer
-
+    def get_serializer_class(self):
+        if self.request.method.lower() == 'get':
+            return serializers.CodeAnswerSerializer
+        return super().get_serializer_class()
 
 # ======================
 # Choice
@@ -84,8 +97,17 @@ class ChoiceViewSet(viewsets.ModelViewSet):
     queryset = exams.Choice.objects.filter(active=True)
     serializer_class = serializers.CreateChoiceSerializer
 
-    class Meta:
-        list_serializer_class = serializers.ChoiceSerializer
+    @action(detail=True, methods=['GET'], name='Attach meta items ids')
+    def custom_action(self, request, pk=None):
+        queryset = exams.Choice.objects.filter(question_id=pk)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def get_serializer_class(self):
+        if self.request.method.lower() == 'get':
+            return serializers.ChoiceSerializer
+        return super().get_serializer_class()
+
 
 
 # ======================
