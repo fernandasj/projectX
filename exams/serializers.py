@@ -25,14 +25,10 @@ class CreateDisciplineSerializer(serializers.ModelSerializer):
 # Question
 # ======================
 class QuestionSerializer(serializers.ModelSerializer):
-    type = serializers.SerializerMethodField()
-
-    def get_type(self, obj):
-        return exams.Question.TYPE_QUESTION[obj.typeQuestion][1]
 
     class Meta:
         model = exams.Question
-        fields = ('idQuestion', 'headQuestion', 'type', 'discipline')
+        fields = ('idQuestion', 'headQuestion', 'typeQuestion', 'get_typeQuestion_display', 'discipline')
        
 
 class CreateQuestionSerializer(serializers.ModelSerializer):

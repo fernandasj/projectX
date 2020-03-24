@@ -70,9 +70,8 @@ class Question(models.Model):
     )
 
     typeQuestion = models.IntegerField(
-        'Type Question',
         choices=TYPE_QUESTION,
-        default=OBJECTIVE
+        default=None
     )
 
 
