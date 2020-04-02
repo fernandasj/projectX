@@ -128,6 +128,8 @@ class CreateAnswerSerializer(serializers.ModelSerializer):
 # ======================
 class TestStudentSerializer(serializers.ModelSerializer):
 
+    test = TestSerializer(read_only=True)
+    student = core.StudentSerializer(read_only=True)
     # test = TestSerializer()
     # student = core.StudentSerializer()
     

@@ -319,15 +319,16 @@ class TestStudent(models.Model):
     )
 
     scores = models.FloatField(
-        'scores',
+        null=True,
+        blank=True
     )
 
     timeStart = models.DateTimeField(
-        'Time Start'
+        null=True,
+        blank=True
     )
 
     timeFinish = models.DateTimeField(
-        'Time Finish',
         null=True,
         blank=True
     )
