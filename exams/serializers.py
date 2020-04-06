@@ -130,8 +130,6 @@ class TestStudentSerializer(serializers.ModelSerializer):
 
     test = TestSerializer(read_only=True)
     student = core.StudentSerializer(read_only=True)
-    # test = TestSerializer()
-    # student = core.StudentSerializer()
     
     class Meta:
         model = exams.TestStudent
@@ -143,4 +141,4 @@ class CreateTestStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = exams.TestStudent
         fields = ('idTestStudent', 'test', 'student', 'scores', 'timeStart', 'timeFinish')
-        list_serializer_class = TestSerializer
+        list_serializer_class = TestStudentSerializer

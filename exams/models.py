@@ -273,7 +273,7 @@ class Answer(models.Model):
         Question,
         on_delete=models.CASCADE,
         verbose_name='question',
-        related_name='answers'
+        related_name='answer'
     )
 
     comment = models.TextField(

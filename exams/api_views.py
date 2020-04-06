@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 import uuid
+from datetime import datetime
 from . import tasks
 from Docker import main
 from . import models as exams
@@ -42,17 +43,19 @@ class QuestionViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request):
-        question = exams.Question.objects.create(headQuestion=request.data['headQuestion'], typeQuestion=request.data['typeQuestion'], discipline_id=request.data['discipline'])
-        if question.typeQuestion == '0':
-            print(request.data['choices'])
+        question = exams.Question.objects.create(headQuestion=request.data['headQuestion'], typeQuestion=int(request.data['typeQuestion']), discipline_id=request.data['discipline'])
+        print(question.typeQuestion)
+        if question.typeQuestion == 0:
+            print("CHOICES")
             for choice in request.data['choices']:
                 newChoice = exams.Choice.objects.create(question=question, correct=choice['correct'], 
                     textChoice=choice['textChoice'])
                 newChoice.save()
-        elif question.typeQuestion == '2':
+        elif question.typeQuestion == 2:
+            print("CODES")
             codeAnswer = exams.CodeAnswer.objects.create(question=question, inputCode=request.data['input'], outputCode=request.data['output'])
             codeAnswer.save()
-            print(request.data['input'], request.data['output'])
+            # print(request.data['input'], request.data['output'])
         question.save()
         return Response({'status': '200'})
 
@@ -69,6 +72,12 @@ class TestViewSet(viewsets.ModelViewSet):
 
     queryset = exams.Test.objects.filter(active=True)
     serializer_class = serializers.CreateTestSerializer
+
+    @action(detail=True, methods=['GET'], name='Attach meta items ids')
+    def studentResult(self, request, pk=None):
+        queryset = exams.TestStudent.objects.filter(student_id=pk)
+        serializer = serializers.TestStudentSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def get_serializer_class(self):
         if self.request.method.lower() == 'get':
@@ -131,7 +140,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.method.lower() == 'get':
-            tasks.image()
             return serializers.AnswerSerializer
         return super().get_serializer_class()
 
@@ -143,6 +151,22 @@ class TestStudentViewSet(viewsets.ModelViewSet):
 
     queryset = exams.TestStudent.objects.filter(active=True)
     serializer_class = serializers.CreateTestStudentSerializer
+
+    def create(self, request):
+        now = datetime.now()
+        testStudent = exams.TestStudent.objects.create(test_id=request.data['test'], student_id=request.data['student'], timeFinish=request.data['timeFinish'])
+        testStudent.timeStart = testStudent.test.aplicationDate
+        testStudent.scores = 0
+        questions = testStudent.test.questions.count()
+        scoreQuestion = 100 / questions
+
+        answers = exams.Answer.objects.filter(student=testStudent.student)
+        for answer in answers:
+            if answer.correct:
+                testStudent.scores += scoreQuestion
+
+        testStudent.save()
+        return Response({'status': '200'})
 
     def get_serializer_class(self):
         if self.request.method.lower() == 'get':
