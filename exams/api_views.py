@@ -168,7 +168,7 @@ class TestStudentViewSet(viewsets.ModelViewSet):
                 testStudent.scores += scoreQuestion
 
         testStudent.save()
-        return Response({'status': '200'})
+        return Response({'id': testStudent.pk ,'status': '200'})
 
 
     @action(detail=True, methods=['GET'], name='get test with question and answer')
