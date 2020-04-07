@@ -142,3 +142,20 @@ class CreateTestStudentSerializer(serializers.ModelSerializer):
         model = exams.TestStudent
         fields = ('idTestStudent', 'test', 'student', 'scores', 'timeStart', 'timeFinish')
         list_serializer_class = TestStudentSerializer
+
+
+class QuestionAnswerSerializer(serializers.Serializer):
+
+    headQuestion = serializers.CharField(max_length=200)
+    typeQuestion = serializers.CharField(max_length=200)
+    correctAnswer = serializers.BooleanField()
+
+
+class TestResultSerializer(serializers.Serializer):
+
+    idTest = serializers.UUIDField(format='hex_verbose')
+    name = serializers.CharField(max_length=200)
+    discipline = serializers.CharField(max_length=200)
+    questions = QuestionAnswerSerializer(many=True)
+    scores = serializers.FloatField()
+    student = serializers.CharField(max_length=200)

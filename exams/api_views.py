@@ -9,6 +9,8 @@ from Docker import main
 from . import models as exams
 from . import serializers
 
+from .data_objects import QuestionAnswer, TestResult
+
 # ======================
 # Discipline
 # ======================
@@ -73,11 +75,11 @@ class TestViewSet(viewsets.ModelViewSet):
     queryset = exams.Test.objects.filter(active=True)
     serializer_class = serializers.CreateTestSerializer
 
-    @action(detail=True, methods=['GET'], name='Attach meta items ids')
-    def studentResult(self, request, pk=None):
-        queryset = exams.TestStudent.objects.filter(student_id=pk)
-        serializer = serializers.TestStudentSerializer(queryset, many=True)
-        return Response(serializer.data)
+    # @action(detail=True, methods=['GET'], name='Attach meta items ids')
+    # def studentResult(self, request, pk=None):
+    #     queryset = exams.TestStudent.objects.filter(student_id=pk)
+    #     serializer = serializers.TestStudentSerializer(queryset, many=True)
+    #     return Response(serializer.data)
 
     def get_serializer_class(self):
         if self.request.method.lower() == 'get':
@@ -167,6 +169,34 @@ class TestStudentViewSet(viewsets.ModelViewSet):
 
         testStudent.save()
         return Response({'status': '200'})
+
+
+    @action(detail=True, methods=['GET'], name='get test with question and answer')
+    def result(self, request, pk=None):
+       
+        test_student = exams.TestStudent.objects.get(pk=pk)
+        questions = list(test_student.test.questions.all())
+        answers = list(exams.Answer.objects.filter(
+            test=test_student.test,
+            student=test_student.student
+        ))
+
+        data = TestResult(
+            idTest=test_student.idTestStudent,
+            name=test_student.test.name,
+            discipline=test_student.test.discipline.name,
+            scores=test_student.scores,
+            student=test_student.student.name,
+            questions=[
+                QuestionAnswer(headQuestion=q.headQuestion, typeQuestion=q.get_typeQuestion_display, correctAnswer=a.correct)
+                for q in questions
+                for a in answers
+                if a.question.pk == q.pk
+            ]
+        )
+        
+        serializer = serializers.TestResultSerializer(data)
+        return Response(serializer.data)
 
     def get_serializer_class(self):
         if self.request.method.lower() == 'get':
