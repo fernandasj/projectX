@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import logging
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,6 +32,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'huey.contrib.djhuey',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,9 +46,29 @@ INSTALLED_APPS = [
 
     'core',
     'exams',
+
+    'corsheaders',
 ]
 
+HUEY = {
+    'huey_class': 'huey.SqliteHuey',
+    'name': 'projectx',
+    'results': True,
+    'store_none': False,
+    'immediate': False,
+    'utc': True
+    # 'name': 'test-django',
+    # 'consumer': {
+    #     'blocking': True,  # Use blocking list pop instead of polling Redis.
+    #     'loglevel': logging.DEBUG,
+    #     'workers': 4,
+    #     'scheduler_interval': 1,
+    #     'simple_log': True,
+    # },
+}
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +76,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ORIGIN_WHITELIST  = [
+     "http://localhost:8080",
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
 
 ROOT_URLCONF = 'projectX.urls'
@@ -133,7 +169,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://www.django-rest-framework.org/
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 40,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),

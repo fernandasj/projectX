@@ -10,15 +10,15 @@ class DisciplineSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = exams.Discipline
-        fields = ('name', 'teacher', 'students')
+        fields = ('idDiscipline','name', 'teacher', 'students')
 
 
 class CreateDisciplineSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = exams.Discipline
-        fields = ('name', 'teacher', 'students')
-        list_serializer_class = DisciplineSerializer
+        fields = ('idDiscipline','name', 'teacher', 'students')
+        # list_serializer_class = DisciplineSerializer
 
 
 # ======================
@@ -28,7 +28,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = exams.Question
-        fields = ('idQuestion', 'headQuestion', 'typeQuestion', 'discipline')
+        fields = ('idQuestion', 'headQuestion', 'typeQuestion', 'get_typeQuestion_display', 'discipline')
        
 
 class CreateQuestionSerializer(serializers.ModelSerializer):
@@ -36,15 +36,16 @@ class CreateQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = exams.Question
         fields = ('idQuestion', 'headQuestion', 'typeQuestion', 'discipline')
-        list_serializer_class = QuestionSerializer
 
 # ======================
 # Test
 # ======================
 class TestSerializer(serializers.ModelSerializer):
 
-    # discipline = DisciplineSerializer()
-    # questions = QuestionSerializer(many=True)
+    questions = QuestionSerializer(many=True)
+    discipline = serializers.StringRelatedField(many=False)
+    aplicationDate = serializers.DateTimeField(format='%d/%m/%Y')
+    aplicationDateLimit = serializers.DateTimeField(format='%d/%m/%Y')
 
     class Meta:
         model = exams.Test
@@ -56,7 +57,6 @@ class CreateTestSerializer(serializers.ModelSerializer):
     class Meta:
         model = exams.Test
         fields = ('idTest', 'aplicationDate', 'aplicationDateLimit', 'name', 'discipline', 'questions')
-        list_serializer_class = TestSerializer
 
 
 # ======================
@@ -115,6 +115,8 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 class CreateAnswerSerializer(serializers.ModelSerializer):
 
+    # choice = ChoiceSerializer(default="")
+
     class Meta:
         model = exams.Answer
         fields = ('idAnswer', 'textAnswer', 'correct', 'choice', 'student', 'test', 'question')
@@ -126,8 +128,8 @@ class CreateAnswerSerializer(serializers.ModelSerializer):
 # ======================
 class TestStudentSerializer(serializers.ModelSerializer):
 
-    # test = TestSerializer()
-    # student = core.StudentSerializer()
+    test = TestSerializer(read_only=True)
+    student = core.StudentSerializer(read_only=True)
     
     class Meta:
         model = exams.TestStudent
@@ -139,4 +141,21 @@ class CreateTestStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = exams.TestStudent
         fields = ('idTestStudent', 'test', 'student', 'scores', 'timeStart', 'timeFinish')
-        list_serializer_class = TestSerializer
+        list_serializer_class = TestStudentSerializer
+
+
+class QuestionAnswerSerializer(serializers.Serializer):
+
+    headQuestion = serializers.CharField(max_length=200)
+    typeQuestion = serializers.CharField(max_length=200)
+    correctAnswer = serializers.BooleanField()
+
+
+class TestResultSerializer(serializers.Serializer):
+
+    idTest = serializers.UUIDField(format='hex_verbose')
+    name = serializers.CharField(max_length=200)
+    discipline = serializers.CharField(max_length=200)
+    questions = QuestionAnswerSerializer(many=True)
+    scores = serializers.FloatField()
+    student = serializers.CharField(max_length=200)

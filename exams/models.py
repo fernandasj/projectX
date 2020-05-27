@@ -50,15 +50,14 @@ class Discipline(models.Model):
 # ======================
 
 class Question(models.Model):
-    CODE = 'CODE'
-    OBJECTIVE = 'OBJECTIVE'
-    SUBJECTIVE = 'SUBJECTIVE'
+    OBJECTIVE = 0
+    SUBJECTIVE = 1
+    CODE = 2
     TYPE_QUESTION = (
-        (CODE, 'Code'),
-        (SUBJECTIVE, 'Subjective'),
-        (OBJECTIVE, 'Objective'),
+        (CODE, 'Algoritmo'),
+        (SUBJECTIVE, 'Subjetiva'),
+        (OBJECTIVE, 'Objetiva'),
     )
-
     idQuestion = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -70,19 +69,18 @@ class Question(models.Model):
         max_length=500
     )
 
-    typeQuestion = models.CharField(
-        'Type Question',
-        max_length=45,
+    typeQuestion = models.IntegerField(
         choices=TYPE_QUESTION,
-        default=OBJECTIVE
+        default=None
     )
 
 
     discipline = models.ForeignKey(
         Discipline,
-        'Discipline',
-        verbose_name='discipline',
-        related_name='questions'
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='questions',
+        verbose_name='disciplines'
     )
 
     active = models.BooleanField(
@@ -122,8 +120,8 @@ class Test(models.Model):
     )
 
     discipline = models.ForeignKey(
-        'Discipline',
         Discipline,
+        on_delete=models.CASCADE,
         verbose_name='discipline',
         related_name='tests'
     )
@@ -162,8 +160,8 @@ class CodeAnswer(models.Model):
     )
 
     question = models.ForeignKey(
-        'Question',
         Question,
+        on_delete=models.CASCADE,
         verbose_name='question',
         related_name='CodeAnswers'
     )
@@ -249,8 +247,10 @@ class Answer(models.Model):
     )
 
     choice = models.ForeignKey(
-        'Choice',
         Choice,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         verbose_name='choice',
         related_name='answers'
     )
@@ -263,17 +263,23 @@ class Answer(models.Model):
     )
 
     test = models.ForeignKey(
-        'Test',
         Test,
+        on_delete=models.CASCADE,
         verbose_name='test',
         related_name='answers'
     )
 
     question = models.ForeignKey(
-        'Question',
         Question,
+        on_delete=models.CASCADE,
         verbose_name='question',
-        related_name='answers'
+        related_name='answer'
+    )
+
+    comment = models.TextField(
+        'comentário sobre a solução',
+        default="",
+        max_length=500
     )
 
     active = models.BooleanField(
@@ -299,8 +305,8 @@ class TestStudent(models.Model):
     )
 
     test = models.ForeignKey(
-        'Test',
         Test,
+        on_delete=models.CASCADE,
         verbose_name='test',
         related_name='testStudents'
     )
@@ -313,15 +319,18 @@ class TestStudent(models.Model):
     )
 
     scores = models.FloatField(
-        'scores',
+        null=True,
+        blank=True
     )
 
     timeStart = models.DateTimeField(
-        'Time Start'
+        null=True,
+        blank=True
     )
 
     timeFinish = models.DateTimeField(
-        'Time Finish'
+        null=True,
+        blank=True
     )
 
     active = models.BooleanField(
